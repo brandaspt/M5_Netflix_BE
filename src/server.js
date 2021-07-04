@@ -5,12 +5,13 @@ import cors from "cors"
 import mediaRouter from "./services/media/mediaRoute.js"
 import reviewsRouter from "./services/reviews/reviewsRoute.js"
 import { errorHandler } from "./errorHandlers.js"
+import { corsOptions } from "./settings/cors.js"
 
 const server = express()
 const PORT = process.env.PORT || 5000
 
 // ### MIDDLEWARES ###
-server.use(cors())
+server.use(cors(corsOptions))
 server.use(express.json())
 
 // ### ENDPOINTS ###
