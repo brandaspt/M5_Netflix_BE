@@ -25,7 +25,7 @@ export const addNewReview = async (req, res, next) => {
 export const deleteReview = async (req, res, next) => {
   try {
     const deletedReview = await Review.findOneAndDelete({ _id: req.params.reviewID })
-    res.json(deleteReview)
+    res.json(deletedReview)
   } catch (error) {
     next(createError(400, error.message))
   }

@@ -11,7 +11,8 @@ const mediaSchema = mongoose.Schema(
     Year: reqString,
     imdbID: reqString,
     Type: reqString,
-    Poster: reqString,
+    Poster: String,
+    Plot: String,
   },
   { timestamps: true }
 )

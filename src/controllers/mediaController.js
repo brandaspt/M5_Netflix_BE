@@ -8,12 +8,27 @@ import { mediaPDFStream } from "../lib/pdf.js"
 // import axios from "axios"
 
 export const getAllMedia = async (req, res, next) => {
-  try {
-    res.json(await Media.find())
-  } catch (error) {
-    console.log(error.message)
-    res.status(500)
-  }
+  const queryTitle = req.query.title || ""
+  const queryType = req.query.type || ""
+  if (queryTitle || queryType) {
+    const myDBResults = await Media.find({ Title: { $regex: queryTitle, $options: "i" }, Type: { $regex: queryType, $options: "i" } })
+
+    if (myDBResults.length) {
+      return res.json(myDBResults)
+    } else {
+      try {
+        const { data } = await omdbBackend.get(`?apikey=${process.env.OMDB_API_KEY}&t=${queryTitle}&type=${queryType}`)
+        if (data.Error) next(createError(400, data.Error))
+        else {
+          req.body.imdbID = data.imdbID
+
+          return await addNewMedia(req, res, next)
+        }
+      } catch (error) {
+        next(createError(400, error.message))
+      }
+    }
+  } else res.json(await Media.find())
 }
 
 export const getSingleMedia = async (req, res, next) => {
@@ -34,8 +49,8 @@ export const addNewMedia = async (req, res, next) => {
     if (data.Response === "False") return next(createError(400, data.Error))
 
     // Extracting relevant fields and saving to DB
-    const { Title, Year, imdbID, Type, Poster } = data
-    const newMediaData = { Title, Year, imdbID, Type, Poster }
+    const { Title, Year, imdbID, Type, Poster, Plot } = data
+    const newMediaData = { Title, Year, imdbID, Type, Poster, Plot }
     const newPost = new Media(newMediaData)
 
     await newPost.save()

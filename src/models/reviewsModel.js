@@ -8,6 +8,7 @@ const reqString = {
 const reviewSchema = mongoose.Schema(
   {
     comment: reqString,
+    author: reqString,
     rate: {
       type: Number,
       min: 1,
