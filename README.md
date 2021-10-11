@@ -25,7 +25,7 @@ Fullstack MERN Netflix Clone project undertaken during Strive School's Full Stac
 ## Setup
 
 - [Live Demo](https://mern-netflix-fe.vercel.app/)
-- [Source Code](https://github.com/brandaspt/m5_netflix-fe/)
+- [Source Code](https://github.com/brandaspt/M5_Netflix_BE/)
 
 ## Features
 
